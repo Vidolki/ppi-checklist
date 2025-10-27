@@ -11,23 +11,20 @@
     :root{
       --text:#1D1D1F;
       --muted:#9CA3AF;
+      --card:#fff;
       --tick:#fa8700;
+      --shadow:0 8px 24px rgba(0,0,0,.06);
       --radius:18px;
       --border:#e5e7eb;
       --head:#f3f4f6;
     }
     *{box-sizing:border-box}
-    /* ⬇️ Make page background transparent for embedding */
-    body{margin:0;background:transparent;color:var(--text);
-         font-family:"Inter",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
-    /* ⬇️ Remove outer spacing and card styling so only the scroll box shows */
-    .container{max-width:1100px;margin:0 auto;padding:0}
-    .card{background:transparent;border-radius:0;box-shadow:none;padding:0}
-    h1{margin:0 0 10px;font-size:24px;line-height:1.15;font-weight:700}
-    p.note{margin:0 0 12px;color:var(--muted);font-size:14px}
-    /* Scroll box */
-    .wrap{overflow:auto;max-height:70vh;border:1px solid var(--border);border-radius:12px;
-          -webkit-overflow-scrolling:touch;background:#fff}
+    body{margin:0;background:#f6f7f9;color:var(--text);font-family:"Inter",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
+    .container{max-width:1100px;margin:32px auto;padding:0 16px}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+    h1{margin:0 0 14px;font-size:24px;line-height:1.15;font-weight:700}
+    p.note{margin:0 0 14px;color:var(--muted);font-size:14px}
+    .wrap{overflow:auto;max-height:70vh;border:1px solid var(--border);border-radius:12px;-webkit-overflow-scrolling:touch;background:#fff}
     table{width:100%;border-collapse:collapse;background:#fff}
     th,td{border:1px solid var(--border);padding:12px 14px;vertical-align:top;font-size:14px}
     th{background:var(--head);text-align:left;font-weight:700}
@@ -43,10 +40,8 @@
 <body>
   <main class="container">
     <section class="card">
-      <!-- If you want NO heading at all inside Carrd, just delete the next two lines -->
       <h1>Pre-Purchase Inspection checklist</h1>
       <p class="note">Basic / Standard / Premium — orange tick = included</p>
-
       <div class="wrap">
         <table id="ppi"><tbody></tbody></table>
       </div>
@@ -54,6 +49,7 @@
   </main>
 
   <script>
+    // Full dataset (mask "111"=Basic+Standard+Premium, "011"=Standard+Premium, "001"=Premium)
     const DATA = [
       ["Interior compartment",[
         ["Door locking","111"],["Boot/tailgate lock","111"],["Door seals","111"],["Door hinges","111"],
