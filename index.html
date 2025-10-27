@@ -1,163 +1,184 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>PPI Checklist</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --text:#1D1D1F;
-      --muted:#9CA3AF;
-      --card:#fff;
-      --tick:#fa8700;
-      --shadow:0 8px 24px rgba(0,0,0,.06);
-      --radius:18px;
-      --border:#e5e7eb;
-      --head:#f3f4f6;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:#f6f7f9;color:var(--text);font-family:"Inter",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";}
-    .container{max-width:1100px;margin:32px auto;padding:0 16px}
-    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
-    h1{margin:0 0 14px;font-size:24px;line-height:1.15;font-weight:700}
-    p.note{margin:0 0 14px;color:var(--muted);font-size:14px}
-    .wrap{overflow:auto;max-height:70vh;border:1px solid var(--border);border-radius:12px;-webkit-overflow-scrolling:touch;background:#fff}
-    table{width:100%;border-collapse:collapse;background:#fff}
-    th,td{border:1px solid var(--border);padding:12px 14px;vertical-align:top;font-size:14px}
-    th{background:var(--head);text-align:left;font-weight:700}
-    .center{text-align:center;width:110px;white-space:nowrap}
-    tr:hover td{background:#f9fafb}
-    .tick svg{display:inline-block;vertical-align:middle}
-    @media (max-width:640px){
-      .wrap{max-height:75vh}
-      th.sticky{position:sticky;top:0;z-index:1}
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pre-Purchase Inspection Checklist</title>
+<meta name="description" content="Full PPI checklist: Basic / Standard / Premium" />
+<style>
+  :root{
+    --text:#1D1D1F;
+    --card:#FFFFFF;
+    --muted:#48484F;
+    --border:#e5e7eb;
+    --head:#f3f4f6;
+    --tick:#fa8700;
+    --shadow:0 8px 24px rgba(0,0,0,.06);
+    --radius:18px;
+  }
+
+  html,body{margin:0;padding:0;background:#fafafa;color:var(--text);}
+  body{font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";}
+
+  .wrap-page{max-width:1120px;margin:24px auto;padding:0 16px;}
+  h1{font-size:28px;margin:0 0 12px;font-weight:700;}
+  p.lead{margin:0 0 18px;color:var(--muted);}
+
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+  .scroll{overflow:auto;max-height:70vh;border:1px solid var(--border);border-radius:12px;-webkit-overflow-scrolling:touch}
+
+  table{width:100%;border-collapse:collapse;background:#fff}
+  th,td{border:1px solid var(--border);padding:12px 14px;vertical-align:top;font-size:14px}
+  th{background:var(--head);text-align:left;font-weight:700}
+  .center{text-align:center;width:110px;white-space:nowrap}
+  tr:hover td{background:#f9fafb}
+  .tick svg{display:inline-block;vertical-align:middle}
+  @media (max-width:640px){
+    .scroll{max-height:75vh}
+    th.sticky{position:sticky;top:0;z-index:2}
+  }
+
+  /* tiny helper to visually separate sections */
+  tr.section-head th{font-size:15px}
+</style>
 </head>
 <body>
-  <main class="container">
-    <section class="card">
-      <h1>Pre-Purchase Inspection checklist</h1>
-     <p class="note">Legend: orange ✓ = included</p>
-      <div class="wrap">
-        <table id="ppi"><tbody></tbody></table>
+  <main class="wrap-page">
+    <h1>Pre-Purchase Inspection checklist</h1>
+    <p class="lead">What’s included in <strong>Basic</strong>, <strong>Standard</strong> and <strong>Premium</strong> inspections.</p>
+
+    <div class="card">
+      <div class="scroll">
+        <table id="ppi-table" aria-label="Pre-Purchase inspection checklist">
+          <tbody></tbody>
+        </table>
       </div>
-    </section>
+    </div>
   </main>
 
-  <script>
-    // Full dataset (mask "111"=Basic+Standard+Premium, "011"=Standard+Premium, "001"=Premium)
-    const DATA = [
-      ["Interior compartment",[
-        ["Door locking","111"],["Boot/tailgate lock","111"],["Door seals","111"],["Door hinges","111"],
-        ["Door trim panels","111"],["Dash panel condition","111"],["Interior sills","111"],["Illuminating lights","111"],
-        ["Seat upholstery","111"],["Seat mechanism (front seats)","111"],["Steering wheel adjustment","111"],
-        ["Rear view mirror condition","111"],["Cigarette lighter","111"],["Headlining","111"],["Visors","111"],
-        ["Carpets","111"],["Sunroof condition","111"],["Rear parcel shelf","111"],["Rear luggage area condition","111"],
-        ["Tool kit","111"],["Charging ports","011"],["Seat belts","011"]
-      ]],
-      ["Electrical/controls",[
-        ["Headlights","111"],["Side light/running lights","111"],["Indicators/hazard lights","111"],
-        ["Rear lights/number plate lights","111"],["Stop lights","111"],["Reverse/fog lights","111"],
-        ["Auxiliary lights","111"],["Panel lights","111"],["Switches/controls (Condition & Operation)","111"],
-        ["Instrument/controls function","111"],["Horn","111"],["Windows/sunroof operation","111"],
-        ["Front windscreen wipers","111"],["Front windscreen washers","111"],["Rear wiper","111"],["Rear washer","111"],
-        ["Headlamp washer","111"],["Headlamp wiper","111"],["Electric/manual mirrors operation","111"],
-        ["CD / Radio operation","111"],["Interior lights","111"],
-        ["Battery voltage","011"],["Climate control/heater fan controls","011"],["Screens (info/entertainment)","011"],
-        ["Key Fobs","011"],["Manual locking key blade & operation","011"],["Steering wheel controls","011"]
-      ]],
-      ["Road test",[
-        ["Driving test (up to 5 miles)","111"],["Starting system/ignition lock","111"],["Warning lights","111"],
-        ["Cold starting","111"],["Fast idle (cold)","111"],["Noise level (cold)","111"],["Excess fumes/smoke","111"],
-        ["Engine - noise level","111"],["Engine - general performance","111"],["Overheating evidence","111"],
-        ["Turbo/super charger operation & noise","111"],["Battery charging system","111"],
-        ["Hand/parking brake operation","111"],["Footbrake operation","111"],["Gearbox operation/noise level","111"],
-        ["Clutch operation","111"],["Accelerator Pedal Operation","111"],["Instrument/controls function","111"],
-        ["General steering/handling","111"],["Road holding/stability","111"],["Suspension noise","111"],
-        ["Cruise control","111"],["Steering wheel alignment","111"],["Steering effort","111"],
-        ["Four wheel drive operation","111"],["Suspension ride height level operation","111"],["Air con operation","111"],
-        ["Final drive operation/noise level","111"],["Hot restarting","011"],["Cooling fan operation","011"],
-        ["Stop-start system","011"],["Hill start system","011"],["Automatic transmission operation & shifts","011"]
-      ]],
-      ["Engine compartment",[
-        ["Bonnet catch","111"],["Bonnet hinges","111"],["General cleanliness of engine bay","111"],
-        ["Coolant/antifreeze level","011"],["Coolant leaks","011"],["Radiator / expansion bottle cap","011"],
-        ["Hoses/pipes","011"],["Engine oil level","011"],["Drive belts (visible damage)","011"],
-        ["Water pump operation","001"],["Power steering fluid level","011"],["Clutch fluid level","011"],
-        ["Brake fluid level","011"],["Engine mountings","011"],["Fuel Injection Leak Off Pipe Condition (if visible)","001"],
-        ["External leaks","011"],["Accelerator links","001"],["Fuel pump/pipes","001"]
-      ]],
-      ["Wheels & tyres",[
-        ["Front right tyre","111"],["Front left tyre","111"],["Rear right tyre","111"],["Rear left tyre","111"],
-        ["Uneven tyre wear","111"],["Spare wheel condition","111"],["Locking wheel nut key","111"],
-        ["Wheel rims","111"],["Wheel trims","111"],["Alloy wheel condition (if applicable)","011"],["Tyre inflation kit","011"]
-      ]],
-      ["Bodywork & exterior",[
-        ["Glass","111"],["Door locks/operation","111"],["Fuel filler cover/petrol cap","111"],["Body damage","111"],
-        ["Windshield (condition)","111"],["Past repairs evident","011"],["Corrosion","011"],["Paint work","011"],
-        ["Mud flaps","011"],["Bumper","011"],["Number plate","011"],["Panel condition","011"]
-      ]],
-      ["Front suspension, brakes & steering",[
-        ["Wheels hubs/bearings","011"],["Brake pads (visual check)","011"],["Brake discs (visual check)","011"],
-        ["Brake pipes/hoses (where visible)","011"],["Road springs","011"],["Shock absorbers (condition/leaks)","011"],
-        ["Bump stops/gaiters","011"],["Suspension arms/mountings","001"],["Suspension arms/fixings","001"],
-        ["Tie bars/anti roll bars","001"],["Location rod/fixings","001"],["Bushes","001"],
-        ["Steering joints/ball joints","011"],["Steering rack","011"],["Power steering","011"]
-      ]],
-      ["Rear suspension & brakes",[
-        ["Wheels hubs/bearings","011"],["Brake pads (visual check)","011"],["Brake discs (visual check)","011"],
-        ["Brake pipes/hoses (if visible)","011"],["Road springs","011"],["Shock absorbers (condition/leaks)","011"],
-        ["Bump stops/gaiters","011"],["Suspension arms/mountings","001"],["Suspension arms/fixings","001"],
-        ["Tie bars/anti roll bars","001"],["Bushes","001"]
-      ]],
-      ["Brake hydraulics",[
-        ["Master cylinder security (if accessible)","001"],["Fluid leaks","001"],["Servo/power system","001"],
-        ["Flexible hoses","001"],["Pipes/connections","001"]
-      ]],
-      ["Clutch and transmission",[
-        ["Fluid/oil leaks","001"],["Hydraulic system","001"],["Linkage wear (manual)","001"],["Casings","001"],
-        ["Mountings","001"],["Drive shaft assemblies","001"],["Sliding joints (if visible)","001"],
-        ["Slave cylinder gaiter/boot (manual)","001"],["Propshaft(s)","001"],["Bearings","001"],
-        ["Clutch pedal","001"],["Clutch cable adjustments","001"],["4WD transmission (if applicable)","001"],
-        ["Dual mass flywheel (noise/vibration)","001"]
-      ]],
-      ["Underside condition",[
-        ["Chassis members","001"],["Sub frames/mountings","001"],["Corrosion - floor/chassis","001"],
-        ["Corrosion protection","001"],["Engine underside leakage","001"]
-      ]],
-      ["Fuel system",[
-        ["Tank fixings","001"],["Fuel lines","001"],["Breather pipes","001"],["Evidence of leaks","001"],
-        ["Fuel tank (if accessible)","001"]
-      ]],
-      ["Exhaust system",[
-        ["Operation","001"],["System condition","001"],["Exhaust manifold (condition)","001"],
-        ["Exhaust pipes (condition)","001"],["Catalytic converter (condition)","001"],
-        ["Heat shields condition","001"],["DPF Condition (soot content with plug-in)","001"]
-      ]]
-    ];
+<script>
+(function(){
+  // tick icon (#fa8700)
+  var TICK = '<span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18"><path fill="#fa8700" d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm-1 14-4-4 1.414-1.414L11 12.172l4.586-4.586L17 9l-6 7z"/></svg></span>';
 
-    const tbody = document.querySelector('#ppi tbody');
-    const tick = '<span class="tick" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#fa8700" d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm-1 14-4-4 1.414-1.414L11 12.172l4.586-4.586L17 9l-6 7z"/></svg></span>';
+  // mask: "111" = Basic+Standard+Premium, "011" = Standard+Premium, "001" = Premium only
+  var DATA = [
+    ["Interior compartment",[
+      ["Door locking","111"],["Boot/tailgate lock","111"],["Door seals","111"],["Door hinges","111"],
+      ["Door trim panels","111"],["Dash panel condition","111"],["Interior sills","111"],["Illuminating lights","111"],
+      ["Seat upholstery","111"],["Seat mechanism (front seats)","111"],["Steering wheel adjustment","111"],
+      ["Rear view mirror condition","111"],["Cigarette lighter","111"],["Headlining","111"],["Visors","111"],
+      ["Carpets","111"],["Sunroof condition","111"],["Rear parcel shelf","111"],["Rear luggage area condition","111"],
+      ["Tool kit","111"],["Charging ports","011"],["Seat belts","011"]
+    ]],
+    ["Electrical/controls",[
+      ["Headlights","111"],["Side light/running lights","111"],["Indicators/hazard lights","111"],
+      ["Rear lights/number plate lights","111"],["Stop lights","111"],["Reverse/fog lights","111"],
+      ["Auxiliary lights","111"],["Panel lights","111"],["Switches/controls (Condition & Operation)","111"],
+      ["Instrument/controls function","111"],["Horn","111"],["Windows/sunroof operation","111"],
+      ["Front windscreen wipers","111"],["Front windscreen washers","111"],["Rear wiper","111"],["Rear washer","111"],
+      ["Headlamp washer","111"],["Headlamp wiper","111"],["Electric/manual mirrors operation","111"],
+      ["CD / Radio operation","111"],["Interior lights","111"],
+      ["Battery voltage","011"],["Climate control/heater fan controls","011"],["Screens (info/entertainment)","011"],
+      ["Key Fobs","011"],["Manual locking key blade & operation","011"],["Steering wheel controls","011"]
+    ]],
+    ["Road test",[
+      ["Driving test (up to 5 miles)","111"],["Starting system/ignition lock","111"],["Warning lights","111"],
+      ["Cold starting","111"],["Fast idle (cold)","111"],["Noise level (cold)","111"],["Excess fumes/smoke","111"],
+      ["Engine - noise level","111"],["Engine - general performance","111"],["Overheating evidence","111"],
+      ["Turbo/super charger operation & noise","111"],["Battery charging system","111"],
+      ["Hand/parking brake operation","111"],["Footbrake operation","111"],["Gearbox operation/noise level","111"],
+      ["Clutch operation","111"],["Accelerator Pedal Operation","111"],["Instrument/controls function","111"],
+      ["General steering/handling","111"],["Road holding/stability","111"],["Suspension noise","111"],
+      ["Cruise control","111"],["Steering wheel alignment","111"],["Steering effort","111"],
+      ["Four wheel drive operation","111"],["Suspension ride height level operation","111"],["Air con operation","111"],
+      ["Final drive operation/noise level","111"],["Hot restarting","011"],["Cooling fan operation","011"],
+      ["Stop-start system","011"],["Hill start system","011"],["Automatic transmission operation & shifts","011"]
+    ]],
+    ["Engine compartment",[
+      ["Bonnet catch","111"],["Bonnet hinges","111"],["General cleanliness of engine bay","111"],
+      ["Coolant/antifreeze level","011"],["Coolant leaks","011"],["Radiator / expansion bottle cap","011"],
+      ["Hoses/pipes","011"],["Engine oil level","011"],["Drive belts (visible damage)","011"],
+      ["Water pump operation","001"],["Power steering fluid level","011"],["Clutch fluid level","011"],
+      ["Brake fluid level","011"],["Engine mountings","011"],["Fuel Injection Leak Off Pipe Condition (if visible)","001"],
+      ["External leaks","011"],["Accelerator links","001"],["Fuel pump/pipes","001"]
+    ]],
+    ["Wheels & tyres",[
+      ["Front right tyre","111"],["Front left tyre","111"],["Rear right tyre","111"],["Rear left tyre","111"],
+      ["Uneven tyre wear","111"],["Spare wheel condition","111"],["Locking wheel nut key","111"],
+      ["Wheel rims","111"],["Wheel trims","111"],["Alloy wheel condition (if applicable)","011"],["Tyre inflation kit","011"]
+    ]],
+    ["Bodywork & exterior",[
+      ["Glass","111"],["Door locks/operation","111"],["Fuel filler cover/petrol cap","111"],["Body damage","111"],
+      ["Windshield (condition)","111"],["Past repairs evident","011"],["Corrosion","011"],["Paint work","011"],
+      ["Mud flaps","011"],["Bumper","011"],["Number plate","011"],["Panel condition","011"]
+    ]],
+    ["Front suspension, brakes & steering",[
+      ["Wheels hubs/bearings","011"],["Brake pads (visual check)","011"],["Brake discs (visual check)","011"],
+      ["Brake pipes/hoses (where visible)","011"],["Road springs","011"],["Shock absorbers (condition/leaks)","011"],
+      ["Bump stops/gaiters","011"],["Suspension arms/mountings","001"],["Suspension arms/fixings","001"],
+      ["Tie bars/anti roll bars","001"],["Location rod/fixings","001"],["Bushes","001"],
+      ["Steering joints/ball joints","011"],["Steering rack","011"],["Power steering","011"]
+    ]],
+    ["Rear suspension & brakes",[
+      ["Wheels hubs/bearings","011"],["Brake pads (visual check)","011"],["Brake discs (visual check)","011"],
+      ["Brake pipes/hoses (if visible)","011"],["Road springs","011"],["Shock absorbers (condition/leaks)","011"],
+      ["Bump stops/gaiters","011"],["Suspension arms/mountings","001"],["Suspension arms/fixings","001"],
+      ["Tie bars/anti roll bars","001"],["Bushes","001"]
+    ]],
+    ["Brake hydraulics",[
+      ["Master cylinder security (if accessible)","001"],["Fluid leaks","001"],["Servo/power system","001"],
+      ["Flexible hoses","001"],["Pipes/connections","001"]
+    ]],
+    ["Clutch and transmission",[
+      ["Fluid/oil leaks","001"],["Hydraulic system","001"],["Linkage wear (manual)","001"],["Casings","001"],
+      ["Mountings","001"],["Drive shaft assemblies","001"],["Sliding joints (if visible)","001"],
+      ["Slave cylinder gaiter/boot (manual)","001"],["Propshaft(s)","001"],["Bearings","001"],
+      ["Clutch pedal","001"],["Clutch cable adjustments","001"],["4WD transmission (if applicable)","001"],
+      ["Dual mass flywheel (noise/vibration)","001"]
+    ]],
+    ["Underside condition",[
+      ["Chassis members","001"],["Sub frames/mountings","001"],["Corrosion - floor/chassis","001"],
+      ["Corrosion protection","001"],["Engine underside leakage","001"]
+    ]],
+    ["Fuel system",[
+      ["Tank fixings","001"],["Fuel lines","001"],["Breather pipes","001"],["Evidence of leaks","001"],
+      ["Fuel tank (if accessible)","001"]
+    ]],
+    ["Exhaust system",[
+      ["Operation","001"],["System condition","001"],["Exhaust manifold (condition)","001"],
+      ["Exhaust pipes (condition)","001"],["Catalytic converter (condition)","001"],
+      ["Heat shields condition","001"],["DPF Condition (soot content with plug-in)","001"]
+    ]]
+  ];
 
-    function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-    function row(html){const tr=document.createElement('tr'); tr.innerHTML=html; tbody.appendChild(tr);}
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function row(tbody, html){var tr=document.createElement('tr'); tr.innerHTML=html; tbody.appendChild(tr);}
 
-    DATA.forEach(([section, items])=>{
-      row(`<th class="sticky">${esc(section)}</th>
-           <th class="center sticky">Basic</th>
-           <th class="center sticky">Standard</th>
-           <th class="center sticky">Premium</th>`);
-      items.forEach(([name, mask])=>{
-        row(`<td>${esc(name)}</td>
-             <td class="center">${mask[0]==='1'?tick:''}</td>
-             <td class="center">${mask[1]==='1'?tick:''}</td>
-             <td class="center">${mask[2]==='1'?tick:''}</td>`);
-      });
-    });
-  </script>
+  function build(){
+    var tbody = document.querySelector('#ppi-table tbody');
+    if(!tbody) return;
+
+    for (var i=0;i<DATA.length;i++){
+      var sec = DATA[i];
+      row(tbody,'<tr class="section-head"><th class="sticky" colspan="1">'+esc(sec[0])+'</th>'
+        +'<th class="center sticky">Basic</th><th class="center sticky">Standard</th><th class="center sticky">Premium</th></tr>');
+      for (var j=0;j<sec[1].length;j++){
+        var name = esc(sec[1][j][0]);
+        var m = sec[1][j][1];
+        row(tbody,
+          '<td>'+name+'</td>'
+          +'<td class="center">'+(m[0]==='1'?TICK:'')+'</td>'
+          +'<td class="center">'+(m[1]==='1'?TICK:'')+'</td>'
+          +'<td class="center">'+(m[2]==='1'?TICK:'')+'</td>'
+        );
+      }
+    }
+  }
+
+  if (document.readyState !== 'loading') build();
+  else document.addEventListener('DOMContentLoaded', build);
+})();
+</script>
 </body>
 </html>
